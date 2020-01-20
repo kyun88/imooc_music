@@ -1,13 +1,20 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+def pomVersionName = '1.0.0-SNAPSHOT'
+def pomName = this.getName()
+def pomDescription = 'the audio library for all project'
+def versionString = '1.0'
+def versionNumber = 1
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.android.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.android.minSdkVersion
+        targetSdkVersion rootProject.android.targetSdkVersion
+        versionCode versionNumber
+        versionName versionString
 
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -24,5 +31,23 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation rootProject.depsLibs.appcompat
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: NEXUS_REPOSITORY_URL) {
+                authentication(userName: NEXUS_USERNAME, password: NEXUS_PASSWORD)
+            }
+            pom.project {
+                name pomName
+                version pomVersionName
+                description pomDescription
+                artifactId pomVersionName
+                groupId POM_GROUPID
+                packaging POM_PACKAGING
+            }
+        }
+    }
 }

@@ -1,13 +1,16 @@
 apply plugin: 'com.android.library'
 
+def versionNumber = 1
+def versionString = '1.0'
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.android.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.android.minSdkVersion
+        targetSdkVersion rootProject.android.targetSdkVersion
+        versionCode versionNumber
+        versionName versionString
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -24,6 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    compileOnly rootProject.depsLibs.appcompat
+    api rootProject.depsLibs.okhttp
+    compileOnly rootProject.depsLibs.gson
 }
